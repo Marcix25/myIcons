@@ -21,6 +21,14 @@
 }
 
 @mixin icons($set, $duo: ()) {
+    //# SIZE
+    // the size of every icon, unless a container or the icon itself sets its own: 1em, the size of the
+    // text around the icon, as in mypgs. An unregistered custom property is inherited as written, so the
+    // em is resolved where the icon reads it. At no specificity, so a project's own :root always wins
+    :where(:root) {
+        --icon-size: 1em;
+    }
+
     //# GLYPHS
     // the drawings, kept away from the icon's own configuration (--icon, --icon-size, --icon-color)
     :root {
@@ -37,10 +45,11 @@
     //# ICON
     // the box the glyph is drawn in, at no specificity: where mypgs is loaded its own rule wins, and on its
     // own this is enough to draw one at the font size, in the text color. The font-size takes --icon-size
-    // and the box is 1em of it, as in mypgs: read again for the width, a value in em would count twice
+    // and the box is 1em of it, as in mypgs: read again for the width, a value in em would count twice.
+    // Unset, --icon-size is 1em, the size of the text around the icon
     :where(:is([pgs~="icon"], [pgs*="icon\5B"]))::before {
         line-height: 1;
-        font-size: var(--icon-size);
+        font-size: var(--icon-size, 1em);
         display: inline-block;
         width: 1em;
         height: 1em;
@@ -80,7 +89,7 @@
                 &::after {
                     content: "";
                     display: inline-block;
-                    font-size: var(--icon-size);
+                    font-size: var(--icon-size, 1em);
                     width: 1em;
                     height: 1em;
                     vertical-align: -0.125em;
